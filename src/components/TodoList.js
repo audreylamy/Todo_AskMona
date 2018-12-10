@@ -51,7 +51,9 @@ class TodoList extends Component {
                 <div className="todo_header">
                     <h3>My Todo List</h3>
                 </div>
-                <RenderTasks />
+                <div className="todo_body">
+                    <RenderTasks />
+                </div>
                 <div className="todo_footer">
                     {this.renderNbTasks()}
                     <div>

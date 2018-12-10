@@ -6,7 +6,7 @@ import Checkbox from './Checkbox';
 import axios from 'axios';
 
 class RenderTasks extends Component {
-
+  
     //delete task
     async deleteTask(id) {
       console.log(id)
@@ -14,21 +14,29 @@ class RenderTasks extends Component {
       this.props.alltasksAction()
     }
 
+    //update status task
+    async taskDone(id, name, check) {
+      if (check === true) {
+          console.log('here')
+          await axios.put("https://todo-test-mona.herokuapp.com/tasks/" + id, {name: name, done: false})
+      } else {
+          console.log('yo')
+          await axios.put("https://todo-test-mona.herokuapp.com/tasks/" + id, {name: name, done: true})
+      }
+      this.props.alltasksAction()
+    }
+
     render() {
-       const {allTasks} = this.props
-       console.log(allTasks)
-        if (allTasks != null) {
-            return allTasks.map((tasks, i) => {
+        if (this.props.allTasks) {
+          console.log(this.props.allTasks)
+            return this.props.allTasks.map((tasks, i) => {
               return (
-                <div key={i} className="todo_body">
+                <div key={i} className='task'>
                     <Checkbox
-                      id={tasks.id}
-                      name={tasks.name}
                       check={tasks.done}
+                      name={tasks.name}
+                      onClick={(e) => this.taskDone(tasks.id, tasks.name, tasks.done)}
                     />
-                    <div className="App">
-                        {tasks.name}
-                    </div>
                     <span onClick={(e) => this.deleteTask(tasks.id)}>delete this task</span>
                 </div>
               );
@@ -45,7 +53,7 @@ class RenderTasks extends Component {
 
 function mapStateToProps(state) {
   return {
-      allTasks: state.tasks.allTasks.data
+      allTasks: state.tasks.allTasks
   }
 }
 

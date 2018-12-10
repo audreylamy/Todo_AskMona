@@ -1,41 +1,27 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { alltasksAction } from '../../reducers/reducer_todo';
-import axios from 'axios';
 
 class Checkbox extends Component {
 
-    //update status task
-    async taskDone(name, id, check) {
-        if (check !== false) {
-            await axios.put("https://todo-test-mona.herokuapp.com/tasks/" + id, {name: name, done: false})
-            this.props.alltasksAction()
-        } else {
-            await axios.put("https://todo-test-mona.herokuapp.com/tasks/" + id, {name: name, done: true})
-            this.props.alltasksAction()
-        }
-    }
-
     render() {
-        const { id, name, check } = this.props
-        if (check) {
+        const { key, onClick, name, check } = this.props
+        if (check === true) {
             return (
-                <input onClick={(e) => this.taskDone(name, id, check)} type="checkbox" id="horns" name="horns" defaultChecked/>
+                <label key={key}>
+                     <input onClick={onClick} value={name} type="checkbox" defaultChecked/>
+                     <span>{name}</span>
+                </label>
             )
-        } else {
+        } else if (check === false) {
             return (
-                <input onClick={(e) => this.taskDone(name, id, check)} type="checkbox" id="horns" name="horns"/>
+                <label key={key}>
+                     <input onClick={onClick} value={name} type="checkbox"/>
+                     <span>{name}</span>
+                </label>
             )
         }
     }
     
 }
 
-function mapDispatchToProps(dispatch, props) { 
-    return bindActionCreators({ 
-        alltasksAction: alltasksAction
-    }, dispatch);
-}
-
-export default connect(null, mapDispatchToProps)(Checkbox);
+export default connect(null, null)(Checkbox);
