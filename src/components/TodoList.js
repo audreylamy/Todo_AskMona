@@ -33,10 +33,9 @@ class TodoList extends Component {
     }
 
     renderNbTasks() {
-        const {allTasks} = this.props
-        if (allTasks != null) {
+        if (this.props.allTasks) {
             return (
-                <div>{allTasks.length} tasks</div>
+                <div>{this.props.allTasks.length} tasks</div>
             )
         } else {
             return (
@@ -69,8 +68,9 @@ class TodoList extends Component {
 }
 
 function mapStateToProps(state) {
+    console.log(state)
     return {
-        allTasks: state.tasks.allTasks.data
+        allTasks: state.tasks.allTasks
     }
   }
 

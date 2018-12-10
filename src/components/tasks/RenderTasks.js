@@ -6,23 +6,32 @@ import Checkbox from './Checkbox';
 import axios from 'axios';
 
 class RenderTasks extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+        value: ''
+    }
+
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({value: event.target.value});
+  }
   
     //delete task
     async deleteTask(id) {
-      console.log(id)
       await axios.delete("https://todo-test-mona.herokuapp.com/tasks/" + id)
       this.props.alltasksAction()
     }
 
-    //update status task
-    async taskDone(id, name, check) {
-      if (check === true) {
-          console.log('here')
-          await axios.put("https://todo-test-mona.herokuapp.com/tasks/" + id, {name: name, done: false})
-      } else {
-          console.log('yo')
-          await axios.put("https://todo-test-mona.herokuapp.com/tasks/" + id, {name: name, done: true})
-      }
+    //update name task
+    async updateTask(e, id, done) {
+      console.log(id)
+      e.preventDefault();
+      await axios.put("https://todo-test-mona.herokuapp.com/tasks/" + id, {name: this.state.value, done: done})
       this.props.alltasksAction()
     }
 
@@ -33,11 +42,18 @@ class RenderTasks extends Component {
               return (
                 <div key={i} className='task'>
                     <Checkbox
+                      id={tasks.id}
                       check={tasks.done}
                       name={tasks.name}
                       onClick={(e) => this.taskDone(tasks.id, tasks.name, tasks.done)}
                     />
-                    <span onClick={(e) => this.deleteTask(tasks.id)}>delete this task</span>
+                    <div className="task_update">
+                      <form onSubmit={(e) => this.updateTask(e, tasks.id, tasks.name, tasks.done)}>
+                        <input type="text" onChange={this.handleChange}></input>
+                        <input type="submit" value="Submit"/>
+                      </form>
+                    </div>
+                    <span onClick={(e) => this.deleteTask(tasks.id)}>Delete</span>
                 </div>
               );
             })
