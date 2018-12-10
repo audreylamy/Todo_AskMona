@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 class RenderTasks extends Component {
     render() {
         const { allTasks } = this.props;
+        console.log(allTasks)
         if (allTasks != null) {
             return allTasks.map((tasks, i) => {
               return (

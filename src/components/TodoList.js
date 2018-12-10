@@ -8,8 +8,12 @@ class TodoList extends Component {
         super(props);
 
         this.state = {
-            allTasks: null
-          }
+            allTasks: null,
+            value: ''
+        }
+
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     async componentDidMount() {
@@ -17,6 +21,17 @@ class TodoList extends Component {
         this.setState({
             allTasks: allTasks.data
         })
+    }
+
+    handleChange(event) {
+        this.setState({value: event.target.value});
+    }
+
+    async handleSubmit(event) {
+        event.preventDefault();
+        await axios.post("https://todo-test-mona.herokuapp.com/tasks", {name: this.state.value, done: false});
+        const allTasks = await axios.get("https://todo-test-mona.herokuapp.com/tasks")
+        console.log(allTasks)
     }
 
     renderNbTaks() {
@@ -43,7 +58,10 @@ class TodoList extends Component {
                 <div className="todo_footer">
                     {this.renderNbTaks()}
                     <div>
-                        <button >Add a new task</button>
+                        <form onSubmit={this.handleSubmit}>
+                            <input type="text" value={this.state.value} onChange={this.handleChange}></input>
+                            <input type="submit" value="Submit"/>
+                        </form>
                     </div>
                 </div>
             </div>
