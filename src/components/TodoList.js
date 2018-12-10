@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { alltasksAction } from '../reducers/reducer_todo';
 import axios from "axios";
 import RenderTasks from './tasks/RenderTasks';
 
@@ -8,7 +11,6 @@ class TodoList extends Component {
         super(props);
 
         this.state = {
-            allTasks: null,
             value: ''
         }
 
@@ -17,10 +19,7 @@ class TodoList extends Component {
     }
 
     async componentDidMount() {
-        const allTasks = await axios.get("https://todo-test-mona.herokuapp.com/tasks")
-        this.setState({
-            allTasks: allTasks.data
-        })
+        this.props.alltasksAction()
     }
 
     handleChange(event) {
@@ -30,14 +29,14 @@ class TodoList extends Component {
     async handleSubmit(event) {
         event.preventDefault();
         await axios.post("https://todo-test-mona.herokuapp.com/tasks", {name: this.state.value, done: false});
-        const allTasks = await axios.get("https://todo-test-mona.herokuapp.com/tasks")
-        console.log(allTasks)
+        this.props.alltasksAction()
     }
 
-    renderNbTaks() {
-        if (this.state.allTasks != null) {
+    renderNbTasks() {
+        const {allTasks} = this.props
+        if (allTasks != null) {
             return (
-                <div>{this.state.allTasks.length} tasks</div>
+                <div>{allTasks.length} tasks</div>
             )
         } else {
             return (
@@ -52,11 +51,9 @@ class TodoList extends Component {
                 <div className="todo_header">
                     <h3>My Todo List</h3>
                 </div>
-                <RenderTasks
-                    allTasks={this.state.allTasks}
-                />
+                <RenderTasks />
                 <div className="todo_footer">
-                    {this.renderNbTaks()}
+                    {this.renderNbTasks()}
                     <div>
                         <form onSubmit={this.handleSubmit}>
                             <input type="text" value={this.state.value} onChange={this.handleChange}></input>
@@ -69,4 +66,16 @@ class TodoList extends Component {
     }
 }
 
-export default TodoList;
+function mapStateToProps(state) {
+    return {
+        allTasks: state.tasks.allTasks.data
+    }
+  }
+
+function mapDispatchToProps(dispatch, props) { 
+    return bindActionCreators({ 
+        alltasksAction: alltasksAction
+    }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TodoList);

@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 class RenderTasks extends Component {
     render() {
-        const { allTasks } = this.props;
-        console.log(allTasks)
+       const {allTasks} = this.props
+       console.log(allTasks)
         if (allTasks != null) {
             return allTasks.map((tasks, i) => {
               return (
@@ -12,6 +13,7 @@ class RenderTasks extends Component {
                     <div className="App">
                         {tasks.name}
                     </div>
+                    <span>           delete</span>
                 </div>
               );
             })
@@ -25,4 +27,10 @@ class RenderTasks extends Component {
     }
 }
 
-export default RenderTasks;
+function mapStateToProps(state) {
+  return {
+      allTasks: state.tasks.allTasks.data
+  }
+}
+
+export default connect(mapStateToProps, null)(RenderTasks);
