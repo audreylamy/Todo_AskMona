@@ -8,45 +8,42 @@ class Checkbox extends Component {
 
     //update status task
     async taskDone(id, name, check) {
-        if (check === true) {
-            console.log('here')
-            await axios.put("https://todo-test-mona.herokuapp.com/tasks/" + id, {name: name, done: false})
+        if (check) {
+            await axios.put("https://todo-test-mona.herokuapp.com/tasks/" + id, { name: name, done: false });
         } else {
-            console.log('yo')
-            await axios.put("https://todo-test-mona.herokuapp.com/tasks/" + id, {name: name, done: true})
+            await axios.put("https://todo-test-mona.herokuapp.com/tasks/" + id, { name: name, done: true });
         }
-        this.props.alltasksAction()
+        this.props.alltasksAction();
       }
 
     render() {
-        const { id, name, check } = this.props
-        if (check === true) {
+        const { id, name, check } = this.props;
+        if (check) {
             return (
-            <div>
-                <input onClick={(e) => this.taskDone(id, name, check)} value={name} type="checkbox" defaultChecked/>
-                <span>{name}</span>
-            </div>
+                <div className="task_checkbox">
+                    <input className="checkbox" onClick={(e) => this.taskDone(id, name, check)} value={name} type="checkbox" defaultChecked/>
+                    <span id={"name" + id} className="label">{name}</span>
+                </div>
             )
-        } else if (check === false) {
+        } else if (!check) {
             return (
-                <div>
-                    <input onClick={(e) => this.taskDone(id, name, check)} value={name} type="checkbox"/>
-                    <span>{name}</span>
+                <div className="task_checkbox">
+                    <input className="checkbox" onClick={(e) => this.taskDone(id, name, check)} value={name} type="checkbox"/>
+                    <span id={"name" + id} className="label">{name}</span>
                 </div>
             )
         } else {
             return (
-                <div>
-                    <input onClick={(e) => this.taskDone(id, name, check)} value={name} type="checkbox"/>
-                    <span>{name}</span>
+                <div className="task_checkbox">
+                    <input className="checkbox" onClick={(e) => this.taskDone(id, name, check)} value={name} type="checkbox"/>
+                    <span id={"name" + id}>{name}</span>
                 </div>
             )
         }
     }
-    
 }
 
-function mapDispatchToProps(dispatch, props) { 
+function mapDispatchToProps(dispatch) { 
     return bindActionCreators({ 
         alltasksAction: alltasksAction
     }, dispatch);

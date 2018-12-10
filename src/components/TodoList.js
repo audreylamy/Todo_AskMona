@@ -6,14 +6,12 @@ import axios from "axios";
 import RenderTasks from './tasks/RenderTasks';
 
 class TodoList extends Component {
-
     constructor(props) {
         super(props);
-
         this.state = {
-            value: ''
+            value: '',
+            errorMessage: ''
         }
-
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -28,18 +26,23 @@ class TodoList extends Component {
 
     async handleSubmit(event) {
         event.preventDefault();
-        await axios.post("https://todo-test-mona.herokuapp.com/tasks", {name: this.state.value, done: false});
-        this.props.alltasksAction()
+        if (this.state.value && this.state.value.length < 30) {
+            await axios.post("https://todo-test-mona.herokuapp.com/tasks", { name: this.state.value, done: false });
+            this.props.alltasksAction();
+            this.setState({ errorMessage: '' });
+        } else {
+            this.setState({ errorMessage: "Please add a valid task" });
+        }
     }
 
     renderNbTasks() {
         if (this.props.allTasks) {
             return (
-                <div>{this.props.allTasks.length} tasks</div>
+                <div className="todo_footer-nb">{this.props.allTasks.length} TASKS</div>
             )
         } else {
             return (
-                <div>0 task</div>
+                <div className="todo_footer-nb">0 TASK</div>
             )
         }
     }
@@ -55,11 +58,12 @@ class TodoList extends Component {
                 </div>
                 <div className="todo_footer">
                     {this.renderNbTasks()}
-                    <div>
+                    <div className="todo_footer-nb">
                         <form onSubmit={this.handleSubmit}>
-                            <input type="text" value={this.state.value} onChange={this.handleChange}></input>
-                            <input type="submit" value="Submit"/>
+                            <input className="input" type="text" placeholder="New Task" value={this.state.value} onChange={this.handleChange}></input>
+                            <input className="button" type="submit" value="Submit"/>
                         </form>
+                        <span>{this.state.errorMessage}</span>
                     </div>
                 </div>
             </div>
@@ -68,13 +72,12 @@ class TodoList extends Component {
 }
 
 function mapStateToProps(state) {
-    console.log(state)
     return {
         allTasks: state.tasks.allTasks
     }
-  }
+}
 
-function mapDispatchToProps(dispatch, props) { 
+function mapDispatchToProps(dispatch) { 
     return bindActionCreators({ 
         alltasksAction: alltasksAction
     }, dispatch);
