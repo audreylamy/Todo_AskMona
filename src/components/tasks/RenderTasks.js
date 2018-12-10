@@ -2,18 +2,15 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { alltasksAction } from '../../reducers/reducer_todo';
-import Axios from 'axios';
+import Checkbox from './Checkbox';
+import axios from 'axios';
 
 class RenderTasks extends Component {
 
-  constructor(props) {
-    super(props);
-      this.deleteTask = this.deleteTask.bind(this);
-    }
-
+    //delete task
     async deleteTask(id) {
       console.log(id)
-      await Axios.delete("https://todo-test-mona.herokuapp.com/tasks/" + id)
+      await axios.delete("https://todo-test-mona.herokuapp.com/tasks/" + id)
       this.props.alltasksAction()
     }
 
@@ -24,7 +21,11 @@ class RenderTasks extends Component {
             return allTasks.map((tasks, i) => {
               return (
                 <div key={i} className="todo_body">
-                    <input type="checkbox" id="horns" name="horns"/>
+                    <Checkbox
+                      id={tasks.id}
+                      name={tasks.name}
+                      check={tasks.done}
+                    />
                     <div className="App">
                         {tasks.name}
                     </div>
