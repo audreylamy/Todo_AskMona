@@ -19,6 +19,18 @@ class TodoList extends Component {
         })
     }
 
+    renderNbTaks() {
+        if (this.state.allTasks != null) {
+            return (
+                <div>{this.state.allTasks.length} tasks</div>
+            )
+        } else {
+            return (
+                <div>0 task</div>
+            )
+        }
+    }
+
     render() {
         return (
             <div className="todo">
@@ -29,7 +41,10 @@ class TodoList extends Component {
                     allTasks={this.state.allTasks}
                 />
                 <div className="todo_footer">
-   
+                    {this.renderNbTaks()}
+                    <div>
+                        <button >Add a new task</button>
+                    </div>
                 </div>
             </div>
         );
