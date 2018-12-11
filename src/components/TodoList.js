@@ -6,7 +6,6 @@ import axios from "axios";
 import RenderTasks from './TodoList/RenderTasks';
 import CountTasks from './TodoList/CountTasks';
 import UpdateTasks from './TodoList/UpdateTasks';
-// import { ReactComponent as Edit} from '../assets/img/edit.svg';
 
 class TodoList extends Component {
     constructor(props) {
@@ -61,7 +60,6 @@ class TodoList extends Component {
                 <div className="todo_header">
                     <h3>My Todo List</h3>
                     <span className="todo_header-edit" onClick={() => this.setState({isEditing: !this.state.isEditing})}>
-                        {/* <Edit className="todo_header-edit--icon" fill='#8A2BE2'/> */}
                         Edit tasks
                     </span>
                 </div>
