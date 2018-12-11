@@ -3,21 +3,25 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { alltasksAction } from '../reducers/reducer_todo';
 import axios from "axios";
-import RenderTasks from './tasks/RenderTasks';
+import RenderTasks from './TodoList/RenderTasks';
+import CountTasks from './TodoList/CountTasks';
+import UpdateTasks from './TodoList/UpdateTasks';
+// import { ReactComponent as Edit} from '../assets/img/edit.svg';
 
 class TodoList extends Component {
     constructor(props) {
         super(props);
         this.state = {
             value: '',
-            errorMessage: ''
+            errorMessage: '',
+            isEditing: false
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    async componentDidMount() {
-        this.props.alltasksAction()
+    componentDidMount() {
+        this.props.alltasksAction();
     }
 
     handleChange(event) {
@@ -26,23 +30,27 @@ class TodoList extends Component {
 
     async handleSubmit(event) {
         event.preventDefault();
-        if (this.state.value && this.state.value.length < 30) {
+        if (this.state.value && this.state.value.length < 50) {
             await axios.post("https://todo-test-mona.herokuapp.com/tasks", { name: this.state.value, done: false });
             this.props.alltasksAction();
             this.setState({ errorMessage: '' });
         } else {
-            this.setState({ errorMessage: "Please add a valid task" });
+            this.setState({ errorMessage: "Please add a valid task (max 50)" });
         }
     }
 
-    renderNbTasks() {
-        if (this.props.allTasks) {
+    renderBody() {
+        if (this.state.isEditing) {
             return (
-                <div className="todo_footer-nb">{this.props.allTasks.length} TASKS</div>
+                <div className="todo_body">
+                    <UpdateTasks />
+                </div>
             )
         } else {
             return (
-                <div className="todo_footer-nb">0 TASK</div>
+                <div className="todo_body">
+                    <RenderTasks />
+                </div>
             )
         }
     }
@@ -52,28 +60,24 @@ class TodoList extends Component {
             <div className="todo">
                 <div className="todo_header">
                     <h3>My Todo List</h3>
+                    <span className="todo_header-edit" onClick={() => this.setState({isEditing: !this.state.isEditing})}>
+                        {/* <Edit className="todo_header-edit--icon" fill='#8A2BE2'/> */}
+                        Edit tasks
+                    </span>
                 </div>
-                <div className="todo_body">
-                    <RenderTasks />
-                </div>
+                {this.renderBody()}
                 <div className="todo_footer">
-                    {this.renderNbTasks()}
-                    <div className="todo_footer-nb">
+                    <CountTasks />
+                    <div className="todo_footer-new">
                         <form onSubmit={this.handleSubmit}>
-                            <input className="input" type="text" placeholder="New Task" value={this.state.value} onChange={this.handleChange}></input>
+                            <input className="inputAdd" type="text" placeholder="New Task" value={this.state.value} onChange={this.handleChange}></input>
                             <input className="button" type="submit" value="Submit"/>
                         </form>
-                        <span>{this.state.errorMessage}</span>
+                        <span className="todo_footer-new--error">{this.state.errorMessage}</span>
                     </div>
                 </div>
             </div>
         );
-    }
-}
-
-function mapStateToProps(state) {
-    return {
-        allTasks: state.tasks.allTasks
     }
 }
 
@@ -83,4 +87,4 @@ function mapDispatchToProps(dispatch) {
     }, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TodoList);
+export default connect(null, mapDispatchToProps)(TodoList);

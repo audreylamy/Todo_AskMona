@@ -21,22 +21,22 @@ class Checkbox extends Component {
         if (check) {
             return (
                 <div className="task_checkbox">
-                    <input className="checkbox" onClick={(e) => this.taskDone(id, name, check)} value={name} type="checkbox" defaultChecked/>
-                    <span id={"name" + id} className="label">{name}</span>
+                    <input className="task_checkbox-checkbox" onClick={(e) => this.taskDone(id, name, check)} value={name} type="checkbox" defaultChecked/>
+                    <span className="task_checkbox-label" id={"name" + id}>{name}</span>
                 </div>
             )
         } else if (!check) {
             return (
                 <div className="task_checkbox">
-                    <input className="checkbox" onClick={(e) => this.taskDone(id, name, check)} value={name} type="checkbox"/>
-                    <span id={"name" + id} className="label">{name}</span>
+                    <input className="task_checkbox-checkbox" onClick={(e) => this.taskDone(id, name, check)} value={name} type="checkbox"/>
+                    <span className="task_checkbox-label" id={"name" + id}>{name}</span>
                 </div>
             )
         } else {
             return (
                 <div className="task_checkbox">
-                    <input className="checkbox" onClick={(e) => this.taskDone(id, name, check)} value={name} type="checkbox"/>
-                    <span id={"name" + id}>{name}</span>
+                    <input className="task_checkbox-checkbox" onClick={(e) => this.taskDone(id, name, check)} value={name} type="checkbox"/>
+                    <span className="task_checkbox-label" id={"name" + id}>{name}</span>
                 </div>
             )
         }

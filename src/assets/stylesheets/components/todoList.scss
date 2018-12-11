@@ -2,15 +2,14 @@
     display: flex;
     flex-direction: column;
     width: 40rem;
-    height: 60rem;
+    height: 90%;
     background-color: $color-white;
     box-shadow: 8px 8px 30px rgba(85, 85, 85, 0.397);
-    font-family: Helvetica, Arial, Sans-Serif;
 
     &_header {
         height: 1rem;
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
         border-bottom: 1px solid $color-primary;
@@ -19,6 +18,27 @@
         text-transform: uppercase;
         font-size: 1.8rem;
         letter-spacing: .1rem;
+
+        &-edit {
+            font-size: 1.3rem;
+            margin-top: 1rem;
+            margin-left: 1rem;
+            color: $color-primary-dark;
+            // border: 1px solid $color-primary-dark;
+            background-color: $color-primary;
+            padding: .3rem 1rem;
+
+            &--icon {
+                width: 1.4rem;
+            }
+        }
+
+        &-edit:hover {
+            transform: translateY(-3px);
+            // box-shadow: 0 .3em .8rem rgba(black, .2);
+            opacity: 0.8;
+            padding: .3rem 1.2rem;
+        }
     }
 
     &_body{
@@ -37,8 +57,19 @@
         border-top: 1px solid $color-primary;
         font-size: 1.5rem;
 
-        &-nb{
-            margin-top: 1rem;
+        &-new {
+            margin-top: .8rem;
+            padding: 1rem;
+
+            &--error {
+                color: $color-primary-dark;
+                font-size: 1rem;
+            }
+        }
+
+        &-nb {
+            color: $color-primary-dark;
+            margin-top: .8rem;
             padding: 1rem;
         }
     }

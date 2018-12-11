@@ -3,7 +3,11 @@ import moment from 'moment';
 
 export const SEARCHALL = 'SEARCHALL';
 
-export default function(state = null, action) {
+const INITIAL_STATE = {
+	allTasks: null
+};
+
+export default function(state = INITIAL_STATE, action) {
     switch(action.type) {
       case SEARCHALL:
         return { ...state, allTasks: action.payload};

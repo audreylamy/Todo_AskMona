@@ -1,5 +1,5 @@
 import reduxThunk from 'redux-thunk';
-import rootReducer from '../reducers/index';
+import appReducer from '../reducers/index';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
@@ -11,7 +11,7 @@ const persistConfig = {
     stateReconciler: autoMergeLevel2
 }
 
-const reducers = persistReducer(persistConfig, rootReducer);
+const reducers = persistReducer(persistConfig, appReducer);
 
 export default function configureStore() {
     const store = createStore(
@@ -23,5 +23,11 @@ export default function configureStore() {
     ) 
     
     const persistor = persistStore(store);
+
+    if (process.env.NODE_ENV !== 'production' && module.hot) {
+            module.hot.accept('../reducers', () => {
+            store.replaceReducer(appReducer)
+        });
+    }
     return { persistor, store };
 }

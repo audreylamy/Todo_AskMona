@@ -36,22 +36,16 @@ class RenderTasks extends Component {
 
   render() {
     if (this.props.allTasks) {
-      return this.props.allTasks.map((tasks, i) => {
+      return this.props.allTasks.map((task, i) => {
         return (
           <div key={i} className='task'>
             <Checkbox
-              id={tasks.id}
-              check={tasks.done}
-              name={tasks.name}
-              onClick={(e) => this.taskDone(tasks.id, tasks.name, tasks.done)}
+              id={task.id}
+              check={task.done}
+              name={task.name}
+              onClick={(e) => this.taskDone(task.id, task.name, task.done)}
             />
-            <div className="task_update">
-              <form onSubmit={(e) => this.updateTask(e, tasks.id, tasks.done)}>
-                <input className="input" placeholder="Update task name" type="text" onChange={this.handleChange}></input>
-                <input className="button" type="submit" value="Submit"/>
-              </form>
-            </div>
-            <Cross className="task_icon" fill='#8A2BE2' onClick={(e) => this.deleteTask(tasks.id)}/>
+            <Cross className="task_icon" fill='#8A2BE2' onClick={(e) => this.deleteTask(task.id)}/>
           </div>
         );
       })
