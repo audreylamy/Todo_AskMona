@@ -7,7 +7,7 @@ Todo List
 https://github.com/audreylamy/Todo_AskMona.git
 ```
 
-2/ Install npm (inside server et client)
+2/ Install packages
 ```
 npm install
 ```
